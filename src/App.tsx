@@ -28,18 +28,7 @@ const CONFIG = {
  * PROFILE PLACEHOLDER (Professional silhouette). Replace this string
  * with your own data:image/...;base64,... string if you want to embed a photo.
  */
-const profilePlaceholder =
-  "data:image/svg+xml;utf8," +
-  encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' width='400' height='400'>
-      <rect width='100%' height='100%' fill='#f3f6fb'/>
-      <g transform='translate(0,0)'>
-        <circle cx='200' cy='120' r='80' fill='#e6eef9' stroke='#cfe7fb' stroke-width='4' />
-        <path d='M120 300c30-60 160-60 190 0v20H120v-20z' fill='#e6eef9' stroke='#cfe7fb' stroke-width='4'/>
-        <text x='200' y='128' font-size='36' fill='#9fbfe8' font-family='Arial' text-anchor='middle' dominant-baseline='middle'> </text>
-      </g>
-    </svg>`
-  );
+const profilePlaceholder = "/harshit.jpg";
 
 /**
  * Helper to build vCard text (vCard 3.0)
