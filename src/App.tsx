@@ -1,146 +1,121 @@
 // src/App.tsx
-// No explicit `import React from 'react'` required if your project uses the new JSX transform.
-
-import { useState } from "react";
+import { useCallback } from "react";
 import "./App.css";
 
 /**
- * Helper: returns a data URL for a simple horizontal L&T-like SVG logo.
- * It's an inline SVG encoded at runtime to avoid huge base64 strings in the repo.
- * You can replace the returned data URL with a real Base64 PNG if you get one later.
+ * CONFIG - replace values here if you want to change details in future
  */
-function getLtLogoDataUrl() {
-  const svg = `
-  <svg xmlns='http://www.w3.org/2000/svg' width='600' height='140' viewBox='0 0 600 140'>
-    <rect width='600' height='140' fill='white'/>
-    <!-- circle mark -->
-    <g transform="translate(20,10)">
-      <circle cx='30' cy='30' r='30' fill='#0070C0' />
-      <path d='M10 30 L30 10 L50 30 L30 50 Z' fill='white' transform="translate(0,0) scale(0.8) translate(5,5)"/>
-    </g>
-    <!-- text -->
-    <g transform='translate(90,80)'>
-      <text x='0' y='0' font-family='Arial, Helvetica, sans-serif' font-size='32' fill='#0070C0' font-weight='700'>
-        LARSEN &amp; TOUBRO
-      </text>
-    </g>
-  </svg>
-  `.trim();
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
+const CONFIG = {
+  fullName: "Harshit Chandegara",
+  title: "Manager Proposal",
+  organization: "Larsen & Toubro (Water & Effluent Treatment Business)",
+  phone: "+966549638438",
+  email: "harshit.chandegara@lntecc.com",
+  linkedin: "https://www.linkedin.com/in/harshit-chandegara/",
+  // whatsapp will be generated from phone (remove + and non-digits)
+  addressLines: [
+    "1st floor, Water & Effluent Treatment IC",
+    "Building No: 6842",
+    "Block 2413, Additional No: 3481",
+    "Al Thumamah Road",
+    "Al Sahafah Dist",
+    "Riyadh 13315",
+    "Kingdom of Saudi Arabia",
+  ],
+};
 
-/** vCard builder */
-function buildVCard(data: {
-  fullName: string;
-  phone: string;
-  email: string;
-  linkedin?: string;
-  organization?: string;
-}) {
-  // vCard 3.0 format (widely supported)
+/**
+ * PROFILE PLACEHOLDER (Professional silhouette). Replace this string
+ * with your own data:image/...;base64,... string if you want to embed a photo.
+ */
+const profilePlaceholder =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400' width='400' height='400'>
+      <rect width='100%' height='100%' fill='#f3f6fb'/>
+      <g transform='translate(0,0)'>
+        <circle cx='200' cy='120' r='80' fill='#e6eef9' stroke='#cfe7fb' stroke-width='4' />
+        <path d='M120 300c30-60 160-60 190 0v20H120v-20z' fill='#e6eef9' stroke='#cfe7fb' stroke-width='4'/>
+        <text x='200' y='128' font-size='36' fill='#9fbfe8' font-family='Arial' text-anchor='middle' dominant-baseline='middle'> </text>
+      </g>
+    </svg>`
+  );
+
+/**
+ * Helper to build vCard text (vCard 3.0)
+ */
+function buildVCard(cfg: typeof CONFIG) {
+  const phone = cfg.phone;
   const lines = [
     "BEGIN:VCARD",
     "VERSION:3.0",
-    `FN:${data.fullName}`,
-    data.organization ? `ORG:${data.organization}` : "",
-    data.phone ? `TEL;TYPE=CELL:${data.phone}` : "",
-    data.email ? `EMAIL;TYPE=INTERNET:${data.email}` : "",
-    data.linkedin ? `URL:${data.linkedin}` : "",
+    `FN:${cfg.fullName}`,
+    cfg.organization ? `ORG:${cfg.organization}` : "",
+    phone ? `TEL;TYPE=CELL:${phone}` : "",
+    cfg.email ? `EMAIL;TYPE=INTERNET:${cfg.email}` : "",
+    cfg.linkedin ? `URL:${cfg.linkedin}` : "",
+    cfg.addressLines && cfg.addressLines.length
+      ? `ADR;TYPE=WORK:;;${cfg.addressLines.join(", ")}`
+      : "",
     "END:VCARD",
   ];
   return lines.filter(Boolean).join("\r\n");
 }
 
 export default function App() {
-  // Your provided details
-  const fullName = "Harshit Chandegara";
-  const title = "Manager Proposal";
-  const organization = "Larsen & Toubro (Water & Effluent Treatment Business)";
-  const phone = "+966549638438";
-  const email = "harshit.chandegara@lntecc.com";
-  const linkedin = "https://www.linkedin.com/in/harshit-chandegara/";
-  // WhatsApp quick link (wa.me requires number without + or spaces)
-  const waNumber = phone.replace(/\D/g, ""); // +966549638438 -> 966549638438
-  const whatsappLink = `https://wa.me/${waNumber}`;
+  const whatsappNumber = CONFIG.phone.replace(/\D/g, "");
+  const whatsappLink = `https://wa.me/${whatsappNumber}`;
+  const telLink = `tel:${CONFIG.phone}`;
+  const mailLink = `mailto:${CONFIG.email}`;
 
-  // Logo data URL and profile placeholder
-  const defaultLogo = getLtLogoDataUrl();
+  // IMPORTANT: place your logo file at /public/logo.png in the repo
+  // (See instructions below)
+  const logoSrc = "/logo.png";
 
-  // Simple placeholder profile picture as inline SVG data URL
-  const defaultProfile =
-    "data:image/svg+xml;utf8," +
-    encodeURIComponent(
-      `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'>
-         <rect width='100%' height='100%' fill='#f3f6fb'/>
-         <circle cx='200' cy='140' r='80' fill='#e6eef9' stroke='#cfe7fb' stroke-width='4'/>
-         <rect x='80' y='240' width='240' height='90' rx='10' fill='#e6eef9' stroke='#cfe7fb' stroke-width='4'/>
-       </svg>`
-    );
-
-  const [logoUrl] = useState<string>(defaultLogo);
-  const [profileUrl, setProfileUrl] = useState<string>(defaultProfile);
-
-  // Handle profile image upload (client-side preview)
-  function onProfileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setProfileUrl(reader.result as string);
-    };
-    reader.readAsDataURL(f);
-  }
-
-  // Download vCard
-  function downloadVCard() {
-    const vcard = buildVCard({
-      fullName,
-      phone,
-      email,
-      linkedin,
-      organization,
-    });
-    const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+  // vCard open: create blob and navigate to it to let phone handle it
+  const addToContacts = useCallback(() => {
+    const vcardText = buildVCard(CONFIG);
+    const blob = new Blob([vcardText], { type: "text/vcard" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${fullName.replace(/\s+/g, "_")}.vcf`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }
+    // On mobile, navigating to the blob URL will typically open the contact import workflow.
+    // Use window.location.href so the browser navigates to the blob URL.
+    window.location.href = url;
+
+    // Optionally revoke after a short delay
+    setTimeout(() => {
+      try {
+        URL.revokeObjectURL(url);
+      } catch {}
+    }, 2000);
+  }, []);
 
   return (
     <div className="page">
       <div className="card">
-        <img className="logo" src={logoUrl} alt="Larsen & Toubro logo" />
+        <img className="logo" src={logoSrc} alt="Larsen & Toubro logo" />
 
         <div className="profile-row">
           <div className="profile-photo-wrap">
-            <img src={profileUrl} alt="Profile" className="profile-photo" />
-            <label className="upload-btn">
-              Change
-              <input
-                type="file"
-                accept="image/*"
-                onChange={onProfileChange}
-                title="Upload profile picture"
-              />
-            </label>
+            <img src={profilePlaceholder} alt="Profile" className="profile-photo" />
+            {/* NOTE: removed Change button by request. To replace profile, edit profilePlaceholder constant in src/App.tsx */}
           </div>
 
           <div className="info">
-            <h1 className="name">{fullName}</h1>
-            <div className="title">{title}</div>
-            <div className="org">{organization}</div>
-
+            <h1 className="name">{CONFIG.fullName}</h1>
+            <div className="title">{CONFIG.title}</div>
+            <div className="org">{CONFIG.organization}</div>
             <div className="placeholder">Digital Business Card – Under Development</div>
+
+            <div className="address">
+              {CONFIG.addressLines.map((l, i) => (
+                <div key={i}>{l}</div>
+              ))}
+            </div>
           </div>
         </div>
 
         <div className="actions">
-          <a className="action" href={`tel:${phone}`}>
+          <a className="action" href={telLink}>
             <svg viewBox="0 0 24 24" className="icon"><path d="M6.6 10.2c1.2 2.4 3 4.3 5.4 5.5l1.1-1.1c.2-.2.5-.3.8-.2 1 .3 2.1.5 3.2.5.4 0 .7.3.8.6l.9 2.7c.1.3 0 .7-.2.9l-1.9 1.9c-.3.3-.8.4-1.2.3C8.1 20.8 3.2 16 2 9.5c-.1-.5 0-1 .3-1.3L4.2 6.3c.3-.3.6-.3.9-.2l2.7.9c.3.1.6.4.6.8 0 1.1.2 2.2.5 3.2.1.3 0 .6-.2.8l-1.1 1.1z" fill="currentColor"/></svg>
             Call
           </a>
@@ -150,23 +125,24 @@ export default function App() {
             WhatsApp
           </a>
 
-          <a className="action" href={`mailto:${email}`}>
+          <a className="action" href={mailLink}>
             <svg viewBox="0 0 24 24" className="icon"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4l-8 5L4 8V6l8 5 8-5v2z" fill="currentColor"/></svg>
             Email
           </a>
 
-          <a className="action" href={linkedin} target="_blank" rel="noreferrer">
+          <a className="action" href={CONFIG.linkedin} target="_blank" rel="noreferrer">
             <svg viewBox="0 0 24 24" className="icon"><path d="M4.98 3.5C4.98 5 3.9 6.1 2.4 6.1S-.2 5 .78 3.5C1.8 2 3.9 1 5.38 1s-.4 0-.4 2.5zM2 8h6v12H2zM10 8h5.5v1.6h.1c.8-1.4 2.7-2.9 5.4-2.9 5.8 0 6.9 3.8 6.9 8.8V20H22v-7.8c0-1.9-.03-4.3-2.6-4.3-2.6 0-3 2-3 4.1V20h-6V8z" fill="currentColor"/></svg>
             LinkedIn
           </a>
+
+          {/* Add to contacts icon */}
+          <button className="action" onClick={addToContacts} title="Add to phone contacts">
+            <svg viewBox="0 0 24 24" className="icon"><path d="M12 3v9h4l-6 6-6-6h4V3z" fill="currentColor"/></svg>
+            Add
+          </button>
         </div>
 
         <div className="bottom-row">
-          <button className="save-btn" onClick={downloadVCard}>
-            <svg viewBox="0 0 24 24" className="icon"><path d="M12 3v9h4l-6 6-6-6h4V3z" fill="currentColor"/></svg>
-            Save Contact (.vcf)
-          </button>
-
           <a className="visit-site" href="https://harshit-business-card.vercel.app" target="_blank" rel="noreferrer">
             Open Live Site
           </a>
@@ -174,7 +150,7 @@ export default function App() {
       </div>
 
       <footer className="note">
-        Tip: To change profile picture, click <strong>Change</strong> and upload an image. To replace the logo, swap the `getLtLogoDataUrl()` result in <code>src/App.tsx</code>.
+        Tip: To change the profile picture permanently edit <code>src/App.tsx</code> — replace the <code>profilePlaceholder</code> value with your own data URL or a hosted image path (instructions below).
       </footer>
     </div>
   );
