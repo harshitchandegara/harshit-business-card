@@ -84,8 +84,7 @@ export default function App() {
             <h1 className="name">{CONFIG.fullName}</h1>
             <div className="title">{CONFIG.title}</div>
             <div className="org">{CONFIG.organization}</div>
-            <div className="placeholder">Digital Business Card – Under Development</div>
-
+          
             <div className="address">
               {CONFIG.addressLines.map((l, i) => (
                 <div key={i}>{l}</div>
