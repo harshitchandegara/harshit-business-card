@@ -28,7 +28,7 @@ const CONFIG = {
  * PROFILE PLACEHOLDER (Professional silhouette). Replace this string
  * with your own data:image/...;base64,... string if you want to embed a photo.
  */
-const profilePlaceholder = "/harshit.jpg";
+const profilePlaceholder = "/images/harshit.jpg"
 
 /**
  * Helper to build vCard text (vCard 3.0)
@@ -129,8 +129,9 @@ export default function App() {
             Add
           </button>
         </div>
+
+      </div>
+
     </div>
-    </div>
-    
   );
 }
