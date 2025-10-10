@@ -93,6 +93,7 @@ export default function App() {
             <h1 className="name">{CONFIG.fullName}</h1>
             <div className="title">{CONFIG.title}</div>
             <div className="org">{CONFIG.organization}</div>
+            <div className="placeholder">Digital Business Card – Under Development</div>
 
             <div className="address">
               {CONFIG.addressLines.map((l, i) => (
@@ -130,8 +131,16 @@ export default function App() {
           </button>
         </div>
 
+        <div className="bottom-row">
+          <a className="visit-site" href="https://harshit-business-card.vercel.app" target="_blank" rel="noreferrer">
+            Open Live Site
+          </a>
+        </div>
       </div>
 
+      <footer className="note">
+        Tip: To change the profile picture permanently edit <code>src/App.tsx</code> — replace the <code>profilePlaceholder</code> value with your own data URL or a hosted image path (instructions below).
+      </footer>
     </div>
   );
 }
