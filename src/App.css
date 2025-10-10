@@ -1,5 +1,4 @@
 /* src/App.css */
-
 :root{
   --lt-blue:#0070C0;
   --bg:#ffffff;
@@ -66,27 +65,6 @@ body,html,#root{
   box-shadow: 0 6px 12px rgba(7, 21, 40, 0.03);
 }
 
-.upload-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  background:#f1f5f9;
-  color: #0f172a;
-  border-radius:8px;
-  font-size:13px;
-  cursor:pointer;
-  position:relative;
-  overflow:hidden;
-}
-
-.upload-btn input[type="file"]{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  cursor:pointer;
-}
-
 .info{
   flex:1;
   min-width:220px;
@@ -119,6 +97,14 @@ body,html,#root{
   font-size:13px;
 }
 
+/* address */
+.address{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.25;
+}
+
 /* Actions */
 .actions{
   margin-top:18px;
@@ -139,6 +125,7 @@ body,html,#root{
   color:#0f172a;
   font-weight:600;
   transition:transform .12s ease, box-shadow .12s;
+  cursor:pointer;
 }
 
 .action:hover{
@@ -162,20 +149,6 @@ body,html,#root{
   flex-wrap:wrap;
 }
 
-.save-btn{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  background:var(--lt-blue);
-  color:white;
-  border:none;
-  padding:10px 14px;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:700;
-  box-shadow: 0 8px 18px rgba(0,112,192,0.14);
-}
-
 .visit-site{
   color:var(--lt-blue);
   text-decoration:none;
@@ -196,5 +169,4 @@ body,html,#root{
   .profile-row{flex-direction:column; align-items:center;}
   .logo{width:80%}
   .bottom-row{flex-direction:column; align-items:stretch}
-  .save-btn{width:100%}
 }
