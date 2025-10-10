@@ -129,18 +129,11 @@ export default function App() {
             <svg viewBox="0 0 24 24" className="icon"><path d="M12 3v9h4l-6 6-6-6h4V3z" fill="currentColor"/></svg>
             Add
           </button>
+      
+
         </div>
 
-        <div className="bottom-row">
-          <a className="visit-site" href="https://harshit-business-card.vercel.app" target="_blank" rel="noreferrer">
-            Open Live Site
-          </a>
-        </div>
-      </div>
-
-      <footer className="note">
-        Tip: To change the profile picture permanently edit <code>src/App.tsx</code> — replace the <code>profilePlaceholder</code> value with your own data URL or a hosted image path (instructions below).
-      </footer>
+    
     </div>
   );
 }
