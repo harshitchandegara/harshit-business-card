@@ -26,7 +26,7 @@ const CONFIG = {
 /**
  * PROFILE PLACEHOLDER
  */
-const profilePlaceholder = "/images/harshit.jpg";
+const profilePlaceholder = "/harshit.jpg";
 
 /**
  * Helper to build vCard text (vCard 3.0)
