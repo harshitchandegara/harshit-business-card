@@ -28,7 +28,7 @@ const CONFIG = {
  * PROFILE PLACEHOLDER (Professional silhouette). Replace this string
  * with your own data:image/...;base64,... string if you want to embed a photo.
  */
-const profilePlaceholder = "/harshit.jpg";
+const profilePlaceholder = "/images/harshit.jpg";
 
 /**
  * Helper to build vCard text (vCard 3.0)
@@ -138,9 +138,9 @@ export default function App() {
         </div>
       </div>
 
-      <footer className="note">
-        Tip: To change the profile picture permanently edit <code>src/App.tsx</code> — replace the <code>profilePlaceholder</code> value with your own data URL or a hosted image path (instructions below).
-      </footer>
+      //<footer className="note">
+        //Tip: To change the profile picture permanently edit <code>src/App.tsx</code> — replace the <code>profilePlaceholder</code> value with your own data URL or a hosted image path (instructions below).
+      //</footer>
     </div>
   );
 }
